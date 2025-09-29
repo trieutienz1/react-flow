@@ -1,10 +1,23 @@
-import React from "react";
+import React, { useCallback, useState } from "react";
 
 import "./index.less";
 
-import { HomeTwoTone } from "@ant-design/icons";
+import { HomeTwoTone, PlusOutlined } from "@ant-design/icons";
+import { Handle, Position } from "@xyflow/react";
 
-const HomeNode = () => {
+const HomeNode = ({ data, id }) => {
+  const [toolbarVisible, setToolbarVisible] = useState(false);
+
+  const onHandleClick = useCallback(
+    (event: any, handleType: any) => {
+      event.stopPropagation(); // Ngăn event bubble lên node
+      setToolbarVisible(true);
+      // Có thể lưu handleType để tùy chỉnh toolbar (ví dụ: khác nhau cho source/target)
+      console.log(`Clicked handle: ${handleType} on node ${id}`);
+    },
+    [id]
+  );
+
   return (
     <div className="node">
       <div className="node-header">
@@ -13,7 +26,36 @@ const HomeNode = () => {
         </div>
         START
       </div>
-      <div className="node-field">đá</div>
+      <div className="node-field">
+        <div className="node-field-content">HOME NODE</div>
+
+        <Handle
+          type="source"
+          position={Position.Right}
+          style={{
+            width: 19,
+            height: 19,
+            backgroundColor: "#3b81dd",
+            top: "calc(100% - 14px)",
+            right: -10,
+            cursor: "pointer",
+          }}
+          id={"source"}
+          onClick={(event) => onHandleClick(event, "source")}
+        >
+          <PlusOutlined
+            style={{
+              width: 15,
+              height: 15,
+              color: "#ffffff",
+              fontSize: 15,
+              position: "absolute",
+              top: 1,
+              left: 1,
+            }}
+          />
+        </Handle>
+      </div>
     </div>
   );
 };

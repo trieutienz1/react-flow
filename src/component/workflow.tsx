@@ -50,7 +50,7 @@ const initialNodes = [
 
   {
     id: "n4",
-    position: { x: 0, y: 400 },
+    position: { x: 0, y: 300 },
     type: "loop",
     data: {
       label: "node loop",
@@ -58,12 +58,12 @@ const initialNodes = [
   },
 ];
 const initialEdges = [
-  {
-    id: "n1-n2",
-    markerEnd: { type: MarkerType.ArrowClosed },
-    source: "n1",
-    target: "n2",
-  },
+  // {
+  //   id: "n1-n2",
+  //   markerEnd: { type: MarkerType.ArrowClosed },
+  //   source: "n1",
+  //   target: "n2",
+  // },
 ];
 
 export default function WorkFlow() {
@@ -89,7 +89,13 @@ export default function WorkFlow() {
     []
   );
   const onConnect = useCallback(
-    (params) => setEdges((edgesSnapshot) => addEdge(params, edgesSnapshot)),
+    (params) =>
+      setEdges((edgesSnapshot) =>
+        addEdge(
+          { ...params, markerEnd: { type: MarkerType.ArrowClosed } },
+          edgesSnapshot
+        )
+      ),
     []
   );
 

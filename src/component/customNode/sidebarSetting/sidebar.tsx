@@ -4,12 +4,12 @@ import "../index.less";
 const Sidebar = ({ selectedNode }) => {
   console.log("selectedNode:", selectedNode);
 
-  const { data } = selectedNode;
+  const { data, id, type } = selectedNode;
 
   return (
     <div className="panel">
       <div className="panel-header">
-        <span>Lặp</span>
+        <span>{type}</span>
         <div>⋮</div>
       </div>
 

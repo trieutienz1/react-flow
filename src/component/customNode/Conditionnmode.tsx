@@ -98,7 +98,7 @@ export default function ConditionNode({ data, id }) {
       </div>
       <div className="case-text">CASE 1:</div>
       <div className="node-field">
-        <div className="node-field-content">asd</div>
+        <div className="node-field-content">CONDITION</div>
         <Handle
           type="source"
           position={Position.Right}
