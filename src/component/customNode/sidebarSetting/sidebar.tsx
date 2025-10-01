@@ -9,7 +9,7 @@ const Sidebar = ({ selectedNode }) => {
   return (
     <div className="panel">
       <div className="panel-header">
-        <span>{type}</span>
+        <span>{type.toUpperCase()}</span>
         <div>⋮</div>
       </div>
 

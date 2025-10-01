@@ -118,6 +118,7 @@ export default function WorkFlow() {
         proOptions={{ hideAttribution: true }}
         onPaneClick={(event) => {
           console.log("Click vào viewport React Flow", event);
+          setSelectedNode(null);
         }}
       >
         <Background variant={BackgroundVariant.Dots} />
