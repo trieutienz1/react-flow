@@ -1,14 +1,17 @@
-import React, { useCallback, useEffect, useState } from "react";
-import { Handle, NodeToolbar, Position } from "@xyflow/react";
-
-import { BranchesOutlined } from "@ant-design/icons";
+import React, { useEffect, useState } from "react";
 
 import "./index.less";
 
-import { PlusOutlined } from "@ant-design/icons";
+import {
+  PlusOutlined,
+  RetweetOutlined,
+  ThunderboltOutlined,
+} from "@ant-design/icons";
+import { Handle, Position } from "@xyflow/react";
 import ToolbarAddnew from "../toolbar";
-export default function ConditionNode({ data, id }) {
-  const [toolbarVisible, setToolbarVisible] = useState();
+
+const ActionNode = ({ data, id }) => {
+  const [toolbarVisible, setToolbarVisible] = useState(data?.showToolbar);
 
   useEffect(() => {
     setToolbarVisible(data?.showToolbar);
@@ -18,26 +21,17 @@ export default function ConditionNode({ data, id }) {
     data.onClickHandle?.(id);
   };
 
-  // const onHandleClick = useCallback(
-  //   (event: any, handleType: any) => {
-  //     event.stopPropagation();
-  //     setToolbarVisible(true);
-  //     console.log(`Clicked handle: ${handleType} on node ${id}`);
-  //   },
-  //   [id]
-  // );
-
   return (
     <div className="node">
       <div className="node-header">
         <div className="icon">
-          <BranchesOutlined />
+          <ThunderboltOutlined />
         </div>
-        IF/ELSE
+        ACTION
       </div>
-      <div className="case-text">CASE 1:</div>
       <div className="node-field">
-        <div className="node-field-content">CONDITION</div>
+        <div className="node-field-content">ACTION NODE</div>
+
         <Handle
           type="source"
           position={Position.Right}
@@ -50,8 +44,6 @@ export default function ConditionNode({ data, id }) {
             cursor: "pointer",
           }}
           id={"source"}
-          // onClick={(event) => onHandleClick(event, "source")}
-
           onClick={(e) => {
             e.stopPropagation();
             handleClick();
@@ -71,7 +63,6 @@ export default function ConditionNode({ data, id }) {
         </Handle>
       </div>
 
-      {/* source */}
       <Handle
         type="target"
         style={{ width: 19, height: 19, backgroundColor: "#3b81dd", top: 24 }}
@@ -97,4 +88,6 @@ export default function ConditionNode({ data, id }) {
       />
     </div>
   );
-}
+};
+
+export default ActionNode;

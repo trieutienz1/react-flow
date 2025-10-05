@@ -1,11 +1,22 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 
 import "./index.less";
 
 import { PlusOutlined, RetweetOutlined } from "@ant-design/icons";
 import { Handle, Position } from "@xyflow/react";
+import ToolbarAddnew from "../toolbar";
 
-const LoopNode = () => {
+const LoopNode = ({ data, id }) => {
+  const [toolbarVisible, setToolbarVisible] = useState(data?.showToolbar);
+
+  useEffect(() => {
+    setToolbarVisible(data?.showToolbar);
+  }, [data?.showToolbar]);
+
+  const handleClick = () => {
+    data.onClickHandle?.(id);
+  };
+
   return (
     <div className="node">
       <div className="node-header">
@@ -29,6 +40,10 @@ const LoopNode = () => {
             cursor: "pointer",
           }}
           id={"source"}
+          onClick={(e) => {
+            e.stopPropagation();
+            handleClick();
+          }}
         >
           <PlusOutlined
             style={{
@@ -61,6 +76,12 @@ const LoopNode = () => {
           }}
         />
       </Handle>
+
+      <ToolbarAddnew
+        data={data}
+        onClose={() => setToolbarVisible(false)}
+        isOpen={toolbarVisible}
+      />
     </div>
   );
 };

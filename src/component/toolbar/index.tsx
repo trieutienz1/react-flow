@@ -39,25 +39,25 @@ const ToolbarAddnew = ({ isOpen, onClose, data }: IToolbarAddNew) => {
     },
   ];
 
-  useEffect(() => {
-    function handleClickOutside(event: MouseEvent) {
-      console.log("toolbarRef.current:", toolbarRef.current);
+  // useEffect(() => {
+  //   function handleClickOutside(event: MouseEvent) {
+  //     console.log("toolbarRef.current:", toolbarRef.current);
 
-      if (
-        toolbarRef.current &&
-        !toolbarRef.current.contains(event.target as Node)
-      ) {
-        onClose();
-      }
-    }
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
-  }, []);
+  //     if (
+  //       toolbarRef.current &&
+  //       !toolbarRef.current.contains(event.target as Node)
+  //     ) {
+  //       onClose();
+  //     }
+  //   }
+  //   document.addEventListener("mousedown", handleClickOutside);
+  //   return () => {
+  //     document.removeEventListener("mousedown", handleClickOutside);
+  //   };
+  // }, []);
 
   return (
-    <div ref={toolbarRef}>
+    <div>
       <NodeToolbar isVisible={isOpen} position={Position.Right}>
         <div
           style={{

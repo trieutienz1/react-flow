@@ -1,11 +1,26 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 
 import "./index.less";
 
 import { ClockCircleTwoTone, PlusOutlined } from "@ant-design/icons";
 import { Handle, Position } from "@xyflow/react";
+import ToolbarAddnew from "../toolbar";
 
-const SchedulesNode = () => {
+interface ISchedules {
+  data: any;
+  id: string;
+}
+
+const SchedulesNode = ({ data, id }: ISchedules) => {
+  const [toolbarVisible, setToolbarVisible] = useState(data?.showToolbar);
+
+  useEffect(() => {
+    setToolbarVisible(data?.showToolbar);
+  }, [data?.showToolbar]);
+  const handleClick = () => {
+    data.onClickHandle?.(id);
+  };
+
   return (
     <div className="node">
       <div className="node-header">
@@ -29,6 +44,10 @@ const SchedulesNode = () => {
             cursor: "pointer",
           }}
           id={"source"}
+          onClick={(e) => {
+            e.stopPropagation();
+            handleClick();
+          }}
         >
           <PlusOutlined
             style={{
@@ -61,6 +80,12 @@ const SchedulesNode = () => {
           }}
         />
       </Handle>
+
+      <ToolbarAddnew
+        data={data}
+        onClose={() => setToolbarVisible(false)}
+        isOpen={toolbarVisible}
+      />
     </div>
   );
 };
