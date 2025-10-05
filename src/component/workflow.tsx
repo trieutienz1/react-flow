@@ -19,6 +19,7 @@ import HomeNode from "./customNode/HomeNode";
 import SchedulesNode from "./customNode/SchedulesNode";
 import LoopNode from "./customNode/LoopNode";
 import ActionNode from "./customNode/ActionNode";
+import { useSelector } from "react-redux";
 
 const initialNodes = [
   {
@@ -79,7 +80,11 @@ const initialEdges = [
 ];
 
 export default function WorkFlow() {
-  const [nodes, setNodes] = useState(initialNodes);
+  const nodesFromRedux = useSelector((state) => state.flow.nodes);
+
+  console.log("nodesFromRedux:", nodesFromRedux);
+
+  const [nodes, setNodes] = useState(nodesFromRedux);
   const [edges, setEdges] = useState(initialEdges);
 
   const [selectedNode, setSelectedNode] = useState(null);
