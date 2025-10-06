@@ -51,24 +51,39 @@ const initialState = {
     },
   ],
   edges: [],
-  value: 0,
 };
 
 const flowSlice = createSlice({
   name: "flow",
   initialState,
   reducers: {
-    increment: (state) => {
-      state.value += 1;
+    setNodes: (state, action) => {
+      state.nodes = action.payload;
     },
-    decrement: (state) => {
-      state.value -= 1;
+    setEdges: (state, action) => {
+      state.edges = action.payload;
     },
-    incrementByAmount: (state, action) => {
-      state.value += action.payload;
+    addNode: (state, action) => {
+      state.nodes.push(action.payload);
+    },
+    addEdge: (state, action) => {
+      state.edges.push(action.payload);
+    },
+    updateNode: (state, action) => {
+      const { id, data } = action.payload;
+      const node = state.nodes.find((n) => n.id === id);
+      if (node) node.data = { ...node.data, ...data };
+    },
+    removeNode: (state, action) => {
+      const id = action.payload;
+      state.nodes = state.nodes.filter((n) => n.id !== id);
+      state.edges = state.edges.filter(
+        (e) => e.source !== id && e.target !== id
+      );
     },
   },
 });
 
-export const { increment, decrement, incrementByAmount } = flowSlice.actions;
+export const { setNodes, setEdges, addNode, addEdge, updateNode, removeNode } =
+  flowSlice.actions;
 export default flowSlice.reducer;

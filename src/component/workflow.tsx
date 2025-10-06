@@ -19,7 +19,8 @@ import HomeNode from "./customNode/HomeNode";
 import SchedulesNode from "./customNode/SchedulesNode";
 import LoopNode from "./customNode/LoopNode";
 import ActionNode from "./customNode/ActionNode";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { setEdges, setNodes } from "./reducer/flow";
 
 const initialNodes = [
   {
@@ -80,12 +81,11 @@ const initialEdges = [
 ];
 
 export default function WorkFlow() {
-  const nodesFromRedux = useSelector((state) => state.flow.nodes);
+  const dispatch = useDispatch();
+  const nodes = useSelector((state) => state.flow.nodes);
+  const edges = useSelector((state) => state.flow.edges);
 
-  console.log("nodesFromRedux:", nodesFromRedux);
-
-  const [nodes, setNodes] = useState(nodesFromRedux);
-  const [edges, setEdges] = useState(initialEdges);
+  console.log("nodes:", nodes, edges);
 
   const [selectedNode, setSelectedNode] = useState(null);
 
@@ -97,24 +97,35 @@ export default function WorkFlow() {
     action: ActionNode,
   };
 
-  const onNodesChange = useCallback((changes) => {
-    console.log("chnge:", changes);
-    setNodes((nodesSnapshot) => applyNodeChanges(changes, nodesSnapshot));
-  }, []);
-  const onEdgesChange = useCallback(
-    (changes) =>
-      setEdges((edgesSnapshot) => applyEdgeChanges(changes, edgesSnapshot)),
-    []
+  const onNodesChange = useCallback(
+    (changes) => {
+      const updated = applyNodeChanges(changes, nodes);
+      dispatch(setNodes(updated));
+    },
+    [nodes, dispatch]
   );
+
+  const onEdgesChange = useCallback(
+    (changes) => {
+      const updated = applyEdgeChanges(changes, edges);
+      dispatch(setEdges(updated));
+    },
+    [edges, dispatch]
+  );
+
   const onConnect = useCallback(
-    (params) =>
-      setEdges((edgesSnapshot) =>
-        addEdge(
-          { ...params, markerEnd: { type: MarkerType.ArrowClosed } },
-          edgesSnapshot
+    (connection) => {
+      const updated = addEdge(connection, edges);
+      dispatch(
+        setEdges(
+          updated.map((item) => ({
+            ...item,
+            markerEnd: { type: MarkerType.ArrowClosed },
+          }))
         )
-      ),
-    []
+      );
+    },
+    [edges, dispatch]
   );
 
   const clearShowtoolbar = () => {
@@ -148,10 +159,7 @@ export default function WorkFlow() {
   return (
     <div style={{ width: "100vw", height: "100vh" }}>
       <ReactFlow
-        nodes={nodes.map((n) => ({
-          ...n,
-          data: { ...n.data, onClickHandle: handleFromNode },
-        }))}
+        nodes={nodes}
         edges={edges}
         nodeTypes={nodeTypes}
         onNodesChange={onNodesChange}
