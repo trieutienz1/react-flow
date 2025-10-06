@@ -51,6 +51,7 @@ const initialState = {
     },
   ],
   edges: [],
+  selectedNode: null,
 };
 
 const flowSlice = createSlice({
@@ -69,6 +70,36 @@ const flowSlice = createSlice({
     addEdge: (state, action) => {
       state.edges.push(action.payload);
     },
+    setSelectedNode: (state, action) => {
+      state.selectedNode = action.payload;
+    },
+    turnOffAllToolbars: (state) => {
+      state.nodes = state.nodes.map((item) => {
+        return {
+          ...item,
+          data: {
+            ...item.data,
+            showToolbar: false,
+          },
+        };
+      });
+    },
+    turnOnToolbar: (state, action) => {
+      const id = action.payload;
+
+      state.nodes = state.nodes.map((item) => {
+        if (item.id == id) {
+          return {
+            ...item,
+            data: {
+              ...item.data,
+              showToolbar: true,
+            },
+          };
+        }
+        return item;
+      });
+    },
     updateNode: (state, action) => {
       const { id, data } = action.payload;
       const node = state.nodes.find((n) => n.id === id);
@@ -84,6 +115,15 @@ const flowSlice = createSlice({
   },
 });
 
-export const { setNodes, setEdges, addNode, addEdge, updateNode, removeNode } =
-  flowSlice.actions;
+export const {
+  setNodes,
+  setEdges,
+  addNode,
+  addEdge,
+  updateNode,
+  removeNode,
+  setSelectedNode,
+  turnOnToolbar,
+  turnOffAllToolbars,
+} = flowSlice.actions;
 export default flowSlice.reducer;

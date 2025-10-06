@@ -8,9 +8,6 @@ interface IToolbarAddNew {
 }
 
 const ToolbarAddnew = ({ isOpen, onClose, data }: IToolbarAddNew) => {
-  console.log("ToolbarAddnew:", data);
-  const toolbarRef = useRef<HTMLDivElement>(null);
-
   const toolbarOptions = [
     {
       label: "Home Node",
@@ -38,23 +35,6 @@ const ToolbarAddnew = ({ isOpen, onClose, data }: IToolbarAddNew) => {
       action: () => console.log("Chọn action node"),
     },
   ];
-
-  // useEffect(() => {
-  //   function handleClickOutside(event: MouseEvent) {
-  //     console.log("toolbarRef.current:", toolbarRef.current);
-
-  //     if (
-  //       toolbarRef.current &&
-  //       !toolbarRef.current.contains(event.target as Node)
-  //     ) {
-  //       onClose();
-  //     }
-  //   }
-  //   document.addEventListener("mousedown", handleClickOutside);
-  //   return () => {
-  //     document.removeEventListener("mousedown", handleClickOutside);
-  //   };
-  // }, []);
 
   return (
     <div>

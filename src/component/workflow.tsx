@@ -20,7 +20,12 @@ import SchedulesNode from "./customNode/SchedulesNode";
 import LoopNode from "./customNode/LoopNode";
 import ActionNode from "./customNode/ActionNode";
 import { useDispatch, useSelector } from "react-redux";
-import { setEdges, setNodes } from "./reducer/flow";
+import {
+  setEdges,
+  setNodes,
+  setSelectedNode,
+  turnOffAllToolbars,
+} from "./reducer/flow";
 
 const initialNodes = [
   {
@@ -85,9 +90,9 @@ export default function WorkFlow() {
   const nodes = useSelector((state) => state.flow.nodes);
   const edges = useSelector((state) => state.flow.edges);
 
-  console.log("nodes:", nodes, edges);
+  const selectedNode = useSelector((state) => state.flow.selectedNode);
 
-  const [selectedNode, setSelectedNode] = useState(null);
+  console.log("nodes:", nodes, edges);
 
   const nodeTypes = {
     condition: ConditionNode,
@@ -128,32 +133,10 @@ export default function WorkFlow() {
     [edges, dispatch]
   );
 
-  const clearShowtoolbar = () => {
-    setNodes((nds) =>
-      nds.map((n) => {
-        return { ...n, data: { ...n.data, showToolbar: false } };
-      })
-    );
-  };
-
   const onNodeClick = (event, node) => {
-    console.log("nodeClick");
-    setSelectedNode(node);
-    clearShowtoolbar();
+    dispatch(setSelectedNode(node));
+    dispatch(turnOffAllToolbars());
     event.stopPropagation();
-  };
-
-  const handleFromNode = (nodeId: string) => {
-    console.log("Node gọi ra ngoài:", nodeId);
-
-    setNodes((nds) =>
-      nds.map((n) => {
-        return n.id == nodeId
-          ? { ...n, data: { ...n.data, showToolbar: true } }
-          : n;
-      })
-    );
-    // ví dụ mở modal hoặc thêm node mới
   };
 
   return (
@@ -169,9 +152,8 @@ export default function WorkFlow() {
         defaultViewport={{ zoom: 1, x: 200, y: 200 }}
         proOptions={{ hideAttribution: true }}
         onPaneClick={(event) => {
-          console.log("Click vào viewport React Flow", event);
-          setSelectedNode(null);
-          clearShowtoolbar();
+          dispatch(setSelectedNode(null));
+          dispatch(turnOffAllToolbars());
         }}
       >
         <Background variant={BackgroundVariant.Dots} />

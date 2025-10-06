@@ -5,16 +5,22 @@ import "./index.less";
 import { PlusOutlined, RetweetOutlined } from "@ant-design/icons";
 import { Handle, Position } from "@xyflow/react";
 import ToolbarAddnew from "../toolbar";
+import { turnOnToolbar } from "../reducer/flow";
+import { useDispatch } from "react-redux";
 
 const LoopNode = ({ data, id }) => {
-  const [toolbarVisible, setToolbarVisible] = useState(data?.showToolbar);
+  const [toolbarVisible, setToolbarVisible] = useState<boolean>(
+    data?.showToolbar
+  );
+
+  const dispatch = useDispatch();
 
   useEffect(() => {
     setToolbarVisible(data?.showToolbar);
   }, [data?.showToolbar]);
 
   const handleClick = () => {
-    data.onClickHandle?.(id);
+    dispatch(turnOnToolbar(id));
   };
 
   return (

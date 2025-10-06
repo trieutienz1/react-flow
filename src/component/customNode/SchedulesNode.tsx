@@ -5,6 +5,8 @@ import "./index.less";
 import { ClockCircleTwoTone, PlusOutlined } from "@ant-design/icons";
 import { Handle, Position } from "@xyflow/react";
 import ToolbarAddnew from "../toolbar";
+import { useDispatch } from "react-redux";
+import { turnOnToolbar } from "../reducer/flow";
 
 interface ISchedules {
   data: any;
@@ -12,13 +14,18 @@ interface ISchedules {
 }
 
 const SchedulesNode = ({ data, id }: ISchedules) => {
-  const [toolbarVisible, setToolbarVisible] = useState(data?.showToolbar);
+  const [toolbarVisible, setToolbarVisible] = useState<boolean>(
+    data?.showToolbar
+  );
+
+  const dispatch = useDispatch();
 
   useEffect(() => {
     setToolbarVisible(data?.showToolbar);
   }, [data?.showToolbar]);
+
   const handleClick = () => {
-    data.onClickHandle?.(id);
+    dispatch(turnOnToolbar(id));
   };
 
   return (

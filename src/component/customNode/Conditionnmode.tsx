@@ -7,15 +7,21 @@ import "./index.less";
 
 import { PlusOutlined } from "@ant-design/icons";
 import ToolbarAddnew from "../toolbar";
+import { turnOnToolbar } from "../reducer/flow";
+import { useDispatch } from "react-redux";
 export default function ConditionNode({ data, id }) {
-  const [toolbarVisible, setToolbarVisible] = useState();
+  const [toolbarVisible, setToolbarVisible] = useState<boolean>(
+    data?.showToolbar
+  );
+
+  const dispatch = useDispatch();
 
   useEffect(() => {
     setToolbarVisible(data?.showToolbar);
   }, [data?.showToolbar]);
 
   const handleClick = () => {
-    data.onClickHandle?.(id);
+    dispatch(turnOnToolbar(id));
   };
 
   // const onHandleClick = useCallback(
