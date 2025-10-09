@@ -7,9 +7,11 @@ import "./index.less";
 
 import { PlusOutlined } from "@ant-design/icons";
 import ToolbarAddnew from "../toolbar";
-import { turnOnToolbar } from "../reducer/flow";
-import { useDispatch } from "react-redux";
-export default function ConditionNode({ data, id }) {
+import { setSelectedNode, turnOnToolbar } from "../reducer/flow";
+import { useDispatch, useSelector } from "react-redux";
+export default function ConditionNode(props) {
+  const { data, id, positionAbsoluteX, positionAbsoluteY } = props;
+  const nodes = useSelector((state) => state.flow.nodes);
   const [toolbarVisible, setToolbarVisible] = useState<boolean>(
     data?.showToolbar
   );
@@ -22,6 +24,14 @@ export default function ConditionNode({ data, id }) {
 
   const handleClick = () => {
     dispatch(turnOnToolbar(id));
+
+    // const node = nodes.find((node) => node.id === id);
+
+    // console.log("node find:", node);
+
+    // if (node) {
+    //   dispatch(setSelectedNode(node));
+    // }
   };
 
   // const onHandleClick = useCallback(
@@ -56,8 +66,6 @@ export default function ConditionNode({ data, id }) {
             cursor: "pointer",
           }}
           id={"source"}
-          // onClick={(event) => onHandleClick(event, "source")}
-
           onClick={(e) => {
             e.stopPropagation();
             handleClick();
@@ -98,6 +106,8 @@ export default function ConditionNode({ data, id }) {
 
       <ToolbarAddnew
         data={data}
+        sourceID={id}
+        sourcePositon={{ x: positionAbsoluteX, y: positionAbsoluteY }}
         onClose={() => setToolbarVisible(false)}
         isOpen={toolbarVisible}
       />

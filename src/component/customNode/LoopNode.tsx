@@ -8,7 +8,7 @@ import ToolbarAddnew from "../toolbar";
 import { turnOnToolbar } from "../reducer/flow";
 import { useDispatch } from "react-redux";
 
-const LoopNode = ({ data, id }) => {
+const LoopNode = ({ data, id, positionAbsoluteX, positionAbsoluteY }) => {
   const [toolbarVisible, setToolbarVisible] = useState<boolean>(
     data?.showToolbar
   );
@@ -85,6 +85,8 @@ const LoopNode = ({ data, id }) => {
 
       <ToolbarAddnew
         data={data}
+        sourceID={id}
+        sourcePositon={{ x: positionAbsoluteX, y: positionAbsoluteY }}
         onClose={() => setToolbarVisible(false)}
         isOpen={toolbarVisible}
       />

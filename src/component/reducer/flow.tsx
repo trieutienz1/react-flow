@@ -28,6 +28,8 @@ const initialState = {
       data: {
         label: "schedules",
         showToolbar: false,
+        timeZone: "VN",
+        date: "2025/10/10",
       },
     },
 
@@ -65,7 +67,9 @@ const flowSlice = createSlice({
       state.edges = action.payload;
     },
     addNode: (state, action) => {
-      state.nodes.push(action.payload);
+      console.log("ađnode ghihhii:", state, action.payload);
+      const newNode = action.payload;
+      state.nodes.push(newNode);
     },
     addEdge: (state, action) => {
       state.edges.push(action.payload);

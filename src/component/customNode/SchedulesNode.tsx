@@ -13,10 +13,17 @@ interface ISchedules {
   id: string;
 }
 
-const SchedulesNode = ({ data, id }: ISchedules) => {
+const SchedulesNode = ({
+  data,
+  id,
+  positionAbsoluteX,
+  positionAbsoluteY,
+}: ISchedules) => {
   const [toolbarVisible, setToolbarVisible] = useState<boolean>(
     data?.showToolbar
   );
+
+  const { timeZone, date } = data;
 
   const dispatch = useDispatch();
 
@@ -37,7 +44,12 @@ const SchedulesNode = ({ data, id }: ISchedules) => {
         SCHEDULES
       </div>
       <div className="node-field">
-        <div className="node-field-content">SCHEDULES</div>
+        <div className="node-field-content">
+          <strong>DATE:</strong> {date}
+        </div>
+        <div className="node-field-content">
+          <strong>TIMEZONE:</strong> {timeZone}
+        </div>
 
         <Handle
           type="source"
@@ -90,6 +102,8 @@ const SchedulesNode = ({ data, id }: ISchedules) => {
 
       <ToolbarAddnew
         data={data}
+        sourceID={id}
+        sourcePositon={{ x: positionAbsoluteX, y: positionAbsoluteY }}
         onClose={() => setToolbarVisible(false)}
         isOpen={toolbarVisible}
       />

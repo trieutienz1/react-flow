@@ -1,38 +1,73 @@
-import { NodeToolbar, Position } from "@xyflow/react";
+import { MarkerType, NodeToolbar, Position } from "@xyflow/react";
 import React, { useCallback, useEffect, useRef, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { addEdge, addNode, turnOffAllToolbars } from "../reducer/flow";
 
 interface IToolbarAddNew {
   isOpen: boolean;
   onClose: () => void;
   data: any;
+  sourcePositon?: any;
+  sourceID?: any;
 }
+const ToolbarAddnew = ({
+  isOpen,
+  onClose,
+  data,
+  sourceID,
+  sourcePositon,
+}: IToolbarAddNew) => {
+  const dispatch = useDispatch();
 
-const ToolbarAddnew = ({ isOpen, onClose, data }: IToolbarAddNew) => {
+  const handleAddNode = async (e: any, nodetype: string) => {
+    console.log("e:", e);
+    e.stopPropagation();
+    const newNode = {
+      id: Date.now().toString(36),
+      position: { x: sourcePositon.x + 300, y: sourcePositon.y },
+      type: `${nodetype}`,
+      data: {
+        label: Date.now().toString(36),
+        showToolbar: false,
+      },
+    };
+
+    const TargetID = Date.now().toString(36);
+
+    const edgesnew = {
+      id: `${sourceID}-${TargetID}`,
+      markerEnd: { type: MarkerType.ArrowClosed },
+      source: sourceID,
+      target: TargetID,
+    };
+
+    dispatch(addNode(newNode));
+
+    dispatch(addEdge(edgesnew));
+
+    dispatch(turnOffAllToolbars());
+  };
+
   const toolbarOptions = [
     {
       label: "Home Node",
-      color: "#84cc16",
-      action: () => console.log("Chọn Home Node:", data),
+      action: (e) => handleAddNode(e, "home"),
     },
     {
       label: "Condition Node",
-      color: "#06b6d4",
-      action: () => console.log("Chọn Condition Node"),
+      action: (e) => handleAddNode(e, "condition"),
     },
     {
       label: "Schedules Node",
-      color: "#f97316",
-      action: () => console.log("Chọn Schedules Node"),
+      action: (e) => handleAddNode(e, "schedules"),
     },
     {
       label: "Loop Node",
-      color: "#f97316",
-      action: () => console.log("Chọn Loop Node"),
+      action: (e) => handleAddNode(e, "loop"),
     },
     {
       label: "Action Node",
-      color: "#ec4899",
-      action: () => console.log("Chọn action node"),
+      action: (e) => handleAddNode(e, "action"),
     },
   ];
 

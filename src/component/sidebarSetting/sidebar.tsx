@@ -2,6 +2,7 @@ import React from "react";
 
 import "../index.less";
 import SchedulesToolbarForm from "./schedules";
+import FormCondition from "./condition";
 const Sidebar = ({ selectedNode }) => {
   console.log("selectedNode:", selectedNode);
 
@@ -15,7 +16,12 @@ const Sidebar = ({ selectedNode }) => {
       </div>
 
       <div className="panel-body">
-        {type === "schedules" && <SchedulesToolbarForm></SchedulesToolbarForm>}
+        {type === "schedules" && (
+          <SchedulesToolbarForm
+            selectedNode={selectedNode}
+          ></SchedulesToolbarForm>
+        )}
+        {type === "condition" && <FormCondition></FormCondition>}
       </div>
     </div>
   );

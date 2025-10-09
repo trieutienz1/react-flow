@@ -8,7 +8,7 @@ import ToolbarAddnew from "../toolbar";
 import { useDispatch } from "react-redux";
 import { turnOnToolbar } from "../reducer/flow";
 
-const HomeNode = ({ data, id }) => {
+const HomeNode = ({ data, id, positionAbsoluteX, positionAbsoluteY }) => {
   const [toolbarVisible, setToolbarVisible] = useState<boolean>(
     data?.showToolbar
   );
@@ -56,8 +56,6 @@ const HomeNode = ({ data, id }) => {
             cursor: "pointer",
           }}
           id={"source"}
-          // onClick={(event) => onHandleClick(event, "source")}
-
           onClick={(e) => {
             e.stopPropagation();
             handleClick();
@@ -79,6 +77,8 @@ const HomeNode = ({ data, id }) => {
 
       <ToolbarAddnew
         data={data}
+        sourceID={id}
+        sourcePositon={{ x: positionAbsoluteX, y: positionAbsoluteY }}
         onClose={() => setToolbarVisible(false)}
         isOpen={toolbarVisible}
       />

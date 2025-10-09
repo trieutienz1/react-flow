@@ -21,6 +21,7 @@ import LoopNode from "./customNode/LoopNode";
 import ActionNode from "./customNode/ActionNode";
 import { useDispatch, useSelector } from "react-redux";
 import {
+  addNode,
   setEdges,
   setNodes,
   setSelectedNode,
