@@ -9,18 +9,19 @@ interface IToolbarAddNew {
   data: any;
   sourcePositon?: any;
   sourceID?: any;
+  sourceHandle?: string;
 }
 const ToolbarAddnew = ({
   isOpen,
   onClose,
   data,
   sourceID,
+  sourceHandle,
   sourcePositon,
 }: IToolbarAddNew) => {
   const dispatch = useDispatch();
 
   const handleAddNode = async (e: any, nodetype: string) => {
-    console.log("e:", e);
     e.stopPropagation();
     const newNode = {
       id: Date.now().toString(36),
@@ -34,39 +35,43 @@ const ToolbarAddnew = ({
 
     const TargetID = Date.now().toString(36);
 
-    const edgesnew = {
+    const edgesNew: any = {
       id: `${sourceID}-${TargetID}`,
       markerEnd: { type: MarkerType.ArrowClosed },
       source: sourceID,
       target: TargetID,
     };
 
+    if (sourceHandle) {
+      edgesNew["sourceHandle"] = sourceHandle;
+    }
+
     dispatch(addNode(newNode));
 
-    dispatch(addEdge(edgesnew));
+    dispatch(addEdge(edgesNew));
 
     dispatch(turnOffAllToolbars());
   };
 
   const toolbarOptions = [
     {
-      label: "Home Node",
+      label: "Home",
       action: (e) => handleAddNode(e, "home"),
     },
     {
-      label: "Condition Node",
+      label: "Condition",
       action: (e) => handleAddNode(e, "condition"),
     },
     {
-      label: "Schedules Node",
+      label: "Schedules",
       action: (e) => handleAddNode(e, "schedules"),
     },
     {
-      label: "Loop Node",
+      label: "Loop",
       action: (e) => handleAddNode(e, "loop"),
     },
     {
-      label: "Action Node",
+      label: "Action",
       action: (e) => handleAddNode(e, "action"),
     },
   ];

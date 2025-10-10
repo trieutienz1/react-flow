@@ -22,6 +22,7 @@ const Sidebar = ({ selectedNode }) => {
           ></SchedulesToolbarForm>
         )}
         {type === "condition" && <FormCondition></FormCondition>}
+        {type === "action" && <FormCondition></FormCondition>}
       </div>
     </div>
   );

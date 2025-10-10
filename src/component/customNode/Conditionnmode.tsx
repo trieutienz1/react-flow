@@ -12,6 +12,7 @@ import { useDispatch, useSelector } from "react-redux";
 export default function ConditionNode(props) {
   const { data, id, positionAbsoluteX, positionAbsoluteY } = props;
   const nodes = useSelector((state) => state.flow.nodes);
+  const [sourceHandle, setSourceHandle] = useState<string>(null);
   const [toolbarVisible, setToolbarVisible] = useState<boolean>(
     data?.showToolbar
   );
@@ -22,26 +23,10 @@ export default function ConditionNode(props) {
     setToolbarVisible(data?.showToolbar);
   }, [data?.showToolbar]);
 
-  const handleClick = () => {
+  const handleClick = (sourceIdHandle: string) => {
+    setSourceHandle(sourceIdHandle);
     dispatch(turnOnToolbar(id));
-
-    // const node = nodes.find((node) => node.id === id);
-
-    // console.log("node find:", node);
-
-    // if (node) {
-    //   dispatch(setSelectedNode(node));
-    // }
   };
-
-  // const onHandleClick = useCallback(
-  //   (event: any, handleType: any) => {
-  //     event.stopPropagation();
-  //     setToolbarVisible(true);
-  //     console.log(`Clicked handle: ${handleType} on node ${id}`);
-  //   },
-  //   [id]
-  // );
 
   return (
     <div className="node">
@@ -49,11 +34,11 @@ export default function ConditionNode(props) {
         <div className="icon">
           <BranchesOutlined />
         </div>
-        IF/ELSE
+        CONDITION
       </div>
       <div className="case-text">CASE 1:</div>
       <div className="node-field">
-        <div className="node-field-content">CONDITION</div>
+        <div className="node-field-content">CONDITION 1</div>
         <Handle
           type="source"
           position={Position.Right}
@@ -68,7 +53,40 @@ export default function ConditionNode(props) {
           id={"source"}
           onClick={(e) => {
             e.stopPropagation();
-            handleClick();
+            handleClick("source");
+          }}
+        >
+          <PlusOutlined
+            style={{
+              width: 15,
+              height: 15,
+              color: "#ffffff",
+              fontSize: 15,
+              position: "absolute",
+              top: 1,
+              left: 1,
+            }}
+          />
+        </Handle>
+      </div>
+      <div className="case-text">CASE 2:</div>
+      <div className="node-field">
+        <div className="node-field-content">CONDITION 2</div>
+        <Handle
+          type="source"
+          position={Position.Right}
+          style={{
+            width: 19,
+            height: 19,
+            backgroundColor: "#3b81dd",
+            top: "calc(100% - 14px)",
+            right: -10,
+            cursor: "pointer",
+          }}
+          id={"source-2"}
+          onClick={(e) => {
+            e.stopPropagation();
+            handleClick("source-2");
           }}
         >
           <PlusOutlined
@@ -107,6 +125,7 @@ export default function ConditionNode(props) {
       <ToolbarAddnew
         data={data}
         sourceID={id}
+        sourceHandle={sourceHandle}
         sourcePositon={{ x: positionAbsoluteX, y: positionAbsoluteY }}
         onClose={() => setToolbarVisible(false)}
         isOpen={toolbarVisible}

@@ -21,6 +21,7 @@ const SchedulesToolbarForm = ({ selectedNode }) => {
             onChange={setMode}
           ></Select>
         </Form.Item>
+        <Form.Item label="Date"></Form.Item>
       </Form>
     </div>
   );
